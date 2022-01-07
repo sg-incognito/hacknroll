@@ -32,7 +32,16 @@ function saveFormData() {
     var content = {};
     document.querySelectorAll("input").forEach(function(e) {
       // TODO(EhWhoAmI): Check if it's a radio button
-      content[e.id] = e.value;
+      if (e.type == "checkbox") {
+        // Create object
+        if (content[e.id] == undefined) {
+          content[e.id] = {__checkbox: true};
+        }
+        // Set the value
+        content[e.id][e.value] = e.checked;
+      } else {
+        content[e.id] = e.value;
+      }
     });
 
     var data = {};
@@ -56,12 +65,42 @@ function restoreFormData() {
     chrome.storage.sync.get("govtech_app", function(items) {
       var object = items["govtech_app"][url];
       for (item in object) {
-        // Set the values
-        // Set the value
-        if (document.getElementById(item)===null) {
+        if (document.getElementById(item) === null) {
           continue;
         }
-        document.getElementById(item).value = object[item];
+        var element_info = object[item];
+        // If string
+        if (Object.prototype.toString.call(object[item]) === '[object String]') {
+          // Set the value
+          document.getElementById(item).value = element_info;
+        }
+        // Checkbox handling
+        else if ('__checkbox' in element_info) {
+          // Not the most elegant, but it's a hackathon for a reason
+          const allElements = document.getElementsByTagName('*')
+          for(let key in allElements) {
+              if(allElements.hasOwnProperty(key)) {
+                  const element = allElements[key]
+                  if(element.id === item) {
+                      // Set the value
+                      if (element.value in object[item]) {
+                        // Then put the value
+                        //element.checked = object[item][element.value];
+                        if (object[item][element.value]) {
+                          // Check if it needs to be clicked or not
+                          if (!element.checked) {
+                            element.click();
+                          }
+                        } else {
+                          if (element.checked) {
+                            element.click();
+                          }
+                        }
+                      }
+                  }
+              }
+          }
+        }
       }
     });
   } else {
