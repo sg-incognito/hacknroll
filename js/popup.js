@@ -53,10 +53,15 @@ function restoreFormData() {
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, restoring your data now...');
     // TODO: IMPLEMENT RESTORE FUNCTION
-    chrome.storage.sync.get("govtech_app"[url], function(items) {
-      for (var item in items) {
+    chrome.storage.sync.get("govtech_app", function(items) {
+      var object = items["govtech_app"][url];
+      for (item in object) {
+        // Set the values
         // Set the value
-        console.log(items);
+        if (document.getElementById(item)===null) {
+          continue;
+        }
+        document.getElementById(item).value = object[item];
       }
     });
   } else {
