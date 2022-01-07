@@ -28,7 +28,7 @@ function saveFormData() {
   let url = window.location.href;
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, saving your data now...');
-    // IMPLEMENT SAVE FUNCTION
+    // TODO: IMPLEMENT SAVE FUNCTION
   } else {
     console.log('Not a form.gov.sg page!');
   }
@@ -41,7 +41,7 @@ function restoreFormData() {
   let url = window.location.href;
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, restoring your data now...');
-    // IMPLEMENT RESTORE FUNCTION
+    // TODO: IMPLEMENT RESTORE FUNCTION
   } else {
     console.log('Not a form.gov.sg page!');
   }
