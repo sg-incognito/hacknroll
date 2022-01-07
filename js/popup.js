@@ -30,9 +30,16 @@ function saveFormData() {
     console.log('form.gov.sg page detected, saving your data now...');
     // Save content
     var content = {};
-    document.querySelectorAll("input").forEach(e => content[e.id] = e.value);
+    document.querySelectorAll("input").forEach(function(e) {
+      // TODO(EhWhoAmI): Check if it's a radio button
+      content[e.id] = e.value;
+    });
+
+    var data = {};
+    data[url] = content;
     // Then save to local data
-    console.log(content);
+    chrome.storage.sync.set({"govtech_app" : data}, function() {
+    });
   } else {
     console.log('Not a form.gov.sg page!');
   }
@@ -46,6 +53,12 @@ function restoreFormData() {
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, restoring your data now...');
     // TODO: IMPLEMENT RESTORE FUNCTION
+    chrome.storage.sync.get("govtech_app"[url], function(items) {
+      for (var item in items) {
+        // Set the value
+        console.log(items);
+      }
+    });
   } else {
     console.log('Not a form.gov.sg page!');
   }
