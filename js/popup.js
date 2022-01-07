@@ -31,15 +31,18 @@ function saveFormData() {
     // Save content
     var content = {};
     document.querySelectorAll("input").forEach(function(e) {
-      // TODO(EhWhoAmI): Check if it's a radio button
       if (e.type == "checkbox") {
-        // Create object
         if (content[e.id] == undefined) {
           content[e.id] = {__checkbox: true};
         }
-        // Set the value
         content[e.id][e.value] = e.checked;
-      } else {
+      } else if (e.type == "radio") {
+        if (e.checked) {
+          var selected = {__radio: true};
+          selected["selected"] = e.value;
+          content[e.id] = selected;
+        }
+      }else {
         content[e.id] = e.value;
       }
     });
@@ -61,9 +64,11 @@ function restoreFormData() {
   let url = window.location.href;
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, restoring your data now...');
-    // TODO: IMPLEMENT RESTORE FUNCTION
+
+    // Restore function
     chrome.storage.sync.get("govtech_app", function(items) {
       var object = items["govtech_app"][url];
+      console.log(object);
       for (item in object) {
         if (document.getElementById(item) === null) {
           continue;
@@ -99,6 +104,22 @@ function restoreFormData() {
                       }
                   }
               }
+          }
+        }
+        // Radio button handling
+        else if ('__radio' in element_info) {
+          // Check the right object
+          const allElements = document.getElementsByTagName('*')
+          for(let key in allElements) {
+            if(allElements.hasOwnProperty(key)) {
+                const element = allElements[key]
+                if(element.id === item) {
+                  if (element.value === element_info["selected"]) {
+                    // Then check the element
+                    element.click();
+                  }
+                }
+            }
           }
         }
       }
