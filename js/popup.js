@@ -28,7 +28,11 @@ function saveFormData() {
   let url = window.location.href;
   if (url.includes("form.gov.sg") && url.includes("http")) {
     console.log('form.gov.sg page detected, saving your data now...');
-    // TODO: IMPLEMENT SAVE FUNCTION
+    // Save content
+    var content = {};
+    document.querySelectorAll("input").forEach(e => content[e.id] = e.value);
+    // Then save to local data
+    console.log(content);
   } else {
     console.log('Not a form.gov.sg page!');
   }
