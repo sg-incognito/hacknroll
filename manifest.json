@@ -2,7 +2,7 @@
   "name": "Govtech Form Auto-Saver",
   "author": "Joshua Foo",
   "description": "A Hack&Roll 2022 Submission - Saves your Form Data on Govtech Forms! (BETA)",
-  "version": "0.9",
+  "version": "1.0",
   "homepage_url": "https://github.com/sg-incognito/hacknroll",
   "manifest_version": 3,
   "background": {

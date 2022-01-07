@@ -30,19 +30,19 @@ function saveFormData() {
     console.log('form.gov.sg page detected, saving your data now...');
     // Save content
     var content = {};
-    document.querySelectorAll("input").forEach(function(e) {
+    document.querySelectorAll("input").forEach(function (e) {
       if (e.type == "checkbox") {
         if (content[e.id] == undefined) {
-          content[e.id] = {__checkbox: true};
+          content[e.id] = { __checkbox: true };
         }
         content[e.id][e.value] = e.checked;
       } else if (e.type == "radio") {
         if (e.checked) {
-          var selected = {__radio: true};
+          var selected = { __radio: true };
           selected["selected"] = e.value;
           content[e.id] = selected;
         }
-      }else {
+      } else {
         content[e.id] = e.value;
       }
     });
@@ -50,10 +50,12 @@ function saveFormData() {
     var data = {};
     data[url] = content;
     // Then save to local data
-    chrome.storage.sync.set({"govtech_app" : data}, function() {
+    chrome.storage.sync.set({ "govtech_app": data }, function () {
     });
+    console.log('Saved!');
   } else {
     console.log('Not a form.gov.sg page!');
+    alert('Not a form.gov.sg page! If you believe this is in error, please contact Incognito#6053 on Discord.');
   }
 }
 
@@ -66,7 +68,7 @@ function restoreFormData() {
     console.log('form.gov.sg page detected, restoring your data now...');
 
     // Restore function
-    chrome.storage.sync.get("govtech_app", function(items) {
+    chrome.storage.sync.get("govtech_app", function (items) {
       var object = items["govtech_app"][url];
       console.log(object);
       for (item in object) {
@@ -83,48 +85,53 @@ function restoreFormData() {
         else if ('__checkbox' in element_info) {
           // Not the most elegant, but it's a hackathon for a reason
           const allElements = document.getElementsByTagName('*')
-          for(let key in allElements) {
-              if(allElements.hasOwnProperty(key)) {
-                  const element = allElements[key]
-                  if(element.id === item) {
-                      // Set the value
-                      if (element.value in object[item]) {
-                        // Then put the value
-                        //element.checked = object[item][element.value];
-                        if (object[item][element.value]) {
-                          // Check if it needs to be clicked or not
-                          if (!element.checked) {
-                            element.click();
-                          }
-                        } else {
-                          if (element.checked) {
-                            element.click();
-                          }
-                        }
-                      }
+          for (let key in allElements) {
+            if (allElements.hasOwnProperty(key)) {
+              const element = allElements[key]
+              if (element.id === item) {
+                // Set the value
+                if (element.value in object[item]) {
+                  // Then put the value
+                  //element.checked = object[item][element.value];
+                  if (object[item][element.value]) {
+                    // Check if it needs to be clicked or not
+                    if (!element.checked) {
+                      element.click();
+                    }
+                  } else {
+                    if (element.checked) {
+                      element.click();
+                    }
                   }
+                }
               }
+            }
           }
         }
         // Radio button handling
         else if ('__radio' in element_info) {
           // Check the right object
           const allElements = document.getElementsByTagName('*')
-          for(let key in allElements) {
-            if(allElements.hasOwnProperty(key)) {
-                const element = allElements[key]
-                if(element.id === item) {
-                  if (element.value === element_info["selected"]) {
-                    // Then check the element
-                    element.click();
-                  }
+          for (let key in allElements) {
+            if (allElements.hasOwnProperty(key)) {
+              const element = allElements[key]
+              if (element.id === item) {
+                if (element.value === element_info["selected"]) {
+                  // Then check the element
+                  element.click();
                 }
+              }
             }
           }
         }
       }
     });
+    document.querySelectorAll("input").forEach(function (e) {
+      var event = new Event('input');
+      e.dispatchEvent(event);
+    });
   } else {
     console.log('Not a form.gov.sg page!');
+    alert('Not a form.gov.sg page! If you believe this is in error, please contact Incognito#6053 on Discord.');
   }
 }
