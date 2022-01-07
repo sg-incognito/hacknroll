@@ -11,7 +11,7 @@
   "permissions": ["storage", "scripting", "activeTab"],
   "content_scripts": [
     {
-      "matches": ["http://form.gov.sg/#!/*", "https://form.gov.sg/#!/*"],
+      "matches": ["*://form.gov.sg/*"],
       "js": ["js/autoSaver.js"]
     }
   ],
