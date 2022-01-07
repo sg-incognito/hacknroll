@@ -24,11 +24,25 @@ restoreForm.addEventListener("click", async () => {
 // The body of this function will be executed as a content script inside the
 // current page
 function saveFormData() {
-  console.log('HI!');
+  console.log("Running Save Function");
+  let url = window.location.href;
+  if (url.includes("form.gov.sg") && url.includes("http")) {
+    console.log('form.gov.sg page detected, saving your data now...');
+    // IMPLEMENT SAVE FUNCTION
+  } else {
+    console.log('Not a form.gov.sg page!');
+  }
 }
 
 // The body of this function will be executed as a content script inside the
 // current page
 function restoreFormData() {
-  console.log('HI!');
+  console.log("Running Save Function");
+  let url = window.location.href;
+  if (url.includes("form.gov.sg") && url.includes("http")) {
+    console.log('form.gov.sg page detected, restoring your data now...');
+    // IMPLEMENT RESTORE FUNCTION
+  } else {
+    console.log('Not a form.gov.sg page!');
+  }
 }
