@@ -6,7 +6,12 @@ if (true) { // TODO: CHANGE TO CHECK IF SAVE FILE EXISTS IN CHROME STORAGE!
     if (r==true) {
         // Restore Data
         console.log("Data Restore Requested.");
-        // TODO: Implement Restore Function from Storage Map
+        try {
+            console.log("Restoring Form Data...");
+            // TODO: Implement Restore Function from Storage Map
+        } catch (error) {
+            console.error("[Govtech Autosave] Error Restoring Form Data: " + error);
+        }
     } else {
         // Do nothing
         console.log("User has declined form restore.");
